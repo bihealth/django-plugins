@@ -17,14 +17,13 @@ Home page
     http://pypi.python.org/pypi/django-plugins-bihealth
 
 Source code:
-    https://github.com/bihealth/django-plugins
-""".lstrip()
+    https://github.com/bihealth/django-plugins\n\n""".lstrip()
 
 long_description += read_docs("CHANGES.rst")
 
 setup(
     name="django-plugins-bihealth",
-    version="0.3.0",
+    version="0.3.1",
     author="Mikko Nieminen, Manuel Holtgrewe, Oliver Stolpe",
     author_email="mikko.nieminen@bih-charite.de, manuel.holtgrewe@bih-charite.de, oliver.stolpe@bih-charite.de",
     packages=find_packages(exclude=["sample-project"]),
