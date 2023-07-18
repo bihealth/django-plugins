@@ -1,5 +1,12 @@
 # Changelog
 
+## [0.4.0](https://www.github.com/bihealth/django-plugins/compare/v0.3.1...v0.4.0) (2023-07-18)
+
+
+### Features
+
+* cleanup setup, bump to 0.4.0 ([#8](https://www.github.com/bihealth/django-plugins/issues/8)) ([c9b0f6b](https://www.github.com/bihealth/django-plugins/commit/c9b0f6b44848f9c680ca2e57031a418c7d06ac73))
+
 ### 0.3.1 (2023-07-18)
 
 
