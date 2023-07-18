@@ -1,8 +1,11 @@
 from __future__ import absolute_import
 
+import sys
+
 from django.db import connection
 from django.conf import settings
 from django.conf.urls import include, url
+import django.utils.functional
 
 from importlib import import_module
 
@@ -26,6 +29,10 @@ def get_plugin_from_string(plugin_name):
 
 
 def include_plugins(point, pattern=r'{plugin}/', urls='urls'):
+    # This hack allows us to run a syncplugins without including plugins in urls.
+    if sys.argv[0] == 'manage.py' and sys.argv[1] in ('migrate', 'makemigration'):
+        return include([])
+
     pluginurls = []
     for plugin in point.get_plugins():
         if hasattr(plugin, urls) and hasattr(plugin, 'name'):

@@ -9,33 +9,30 @@ def read_docs(filename):
 long_description = """
 ``django-plugins`` offers functionality to make Django apps them more reusable.
 
-Originally developed by Mantas Zimnickas (sirexas@gmail.com).
-
+For maintained by @bihealth, aims at Django >=3.0.
 
 Home page
-    http://pypi.python.org/pypi/django-plugins
-
-Documentation
-    http://packages.python.org/django-plugins/
+    http://pypi.python.org/pypi/django-plugins-bihealth
 
 Source code:
-    https://github.com/krischer/django-plugins\n\n""".lstrip()
+    https://github.com/bihealth/django-plugins
+""".lstrip()
 
 long_description += read_docs('CHANGES.rst')
 
-setup(name='django-plugins',
+setup(name='django-plugins-bihealth',
       version='0.3.0',
-      author='Lion Krischer',
-      author_email='lion.krischer@googlemail.com',
+      author='Mikko Nieminen, Manuel Holtgrewe, Oliver Stolpe',
+      author_email='mikko.nieminen@bih-charite.de, manuel.holtgrewe@bih-charite.de, oliver.stolpe@bih-charite.de',
       packages=find_packages(exclude=['sample-project']),
       install_requires=[
-          'django>=1.6',
-          'django-dirtyfields<1.3',
+          'django>=3.0',
+          'django-dirtyfields',
       ],
-      url='https://github.com/krischer/django-plugins',
-      download_url='http://pypi.python.org/pypi/django-plugins',
+      url='https://github.com/bihealth/django-plugins',
+      download_url='http://pypi.python.org/pypi/django-plugins-bihealth',
       license='LGPL',
-      description='django-plugins.',
+      description='django-plugins-bihealth',
       long_description=long_description,
       include_package_data=True,
       exclude_package_data={'': ['sample-project']},
@@ -49,11 +46,10 @@ setup(name='django-plugins',
           'GNU Library or Lesser General Public License (LGPL)',
           'Operating System :: OS Independent',
           'Programming Language :: Python',
-          'Programming Language :: Python :: 2',
-          'Programming Language :: Python :: 2.7',
           'Programming Language :: Python :: 3',
-          'Programming Language :: Python :: 3.3',
-          'Programming Language :: Python :: 3.4',
-          'Programming Language :: Python :: 3.5',
+          'Programming Language :: Python :: 3.8',
+          'Programming Language :: Python :: 3.9',
+          'Programming Language :: Python :: 3.10',
+          'Programming Language :: Python :: 3.11',
           'Topic :: Software Development :: Libraries :: Python Modules',
       ])

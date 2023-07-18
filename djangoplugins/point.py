@@ -1,6 +1,5 @@
 from __future__ import absolute_import, unicode_literals
 
-from django import VERSION as django_version
 from django.utils.translation import ugettext_lazy as _
 from django.core.exceptions import ObjectDoesNotExist
 
@@ -121,11 +120,8 @@ class PluginPoint(metaclass=PluginMount):
         # plugins to be executed before the corresponding database tables
         # exist. This method will only return something if the database
         # tables have already been created.
-        # XXX: I don't fully understand the issue and there should be
-        # another way but this appears to work fine.
-        if django_version >= (1, 9) and \
-                not db_table_exists(Plugin._meta.db_table):
-            raise StopIteration
+        if not db_table_exists(Plugin._meta.db_table):
+            return
 
         if is_plugin_point(cls):
             for plugin_model in cls.get_plugins_qs():

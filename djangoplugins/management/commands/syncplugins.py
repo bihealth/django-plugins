@@ -2,8 +2,6 @@ from __future__ import absolute_import, unicode_literals
 
 from optparse import make_option
 
-from django import VERSION as django_version
-
 from django.core.management.base import BaseCommand
 
 from djangoplugins.point import PluginMount
@@ -14,16 +12,6 @@ from djangoplugins.models import Plugin, PluginPoint, REMOVED, ENABLED
 class Command(BaseCommand):
     help = ("Syncs the registered plugins and plugin points with the model "
             "versions.")
-    if django_version <= (1, 8):
-        option_list = BaseCommand.option_list + (
-            make_option('--delete',
-                        action='store_true',
-                        dest='delete',
-                        default=False,
-                        help='delete the REMOVED Plugin and PluginPoint '
-                        'instances.'),
-        )
-
     requires_model_validation = True
 
     def add_arguments(self, parser):
@@ -135,10 +123,9 @@ class SyncPlugins():
         # plugins to be executed before the corresponding database tables
         # exist. This method will only return something if the database
         # tables have already been created.
-        # XXX: I don't fully understand the issue and there should be
-        # another way but this appears to work fine.
-        if django_version >= (1, 9) and (
+        if (
                 not db_table_exists(Plugin._meta.db_table) or
-                not db_table_exists(PluginPoint._meta.db_table)):
+                not db_table_exists(PluginPoint._meta.db_table)
+        ):
             return
         self.points()

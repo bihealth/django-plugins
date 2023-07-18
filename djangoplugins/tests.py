@@ -3,7 +3,6 @@ from __future__ import absolute_import
 from django import forms
 from django.test import TestCase
 from django.utils.translation import ugettext_lazy as _
-from django.utils import six
 
 from .fields import PluginChoiceField, PluginModelChoiceField, \
     PluginModelMultipleChoiceField
@@ -108,18 +107,18 @@ class PluginModelsTest(TestCase):
     def test_plugin_model(self):
         plugin_name = 'djangoplugins.tests.MyPlugin'
         plugin = Plugin.objects.get(pythonpath=plugin_name)
-        self.assertEqual(plugin_name, six.text_type(plugin))
+        self.assertEqual(plugin_name, str(plugin))
         self.assertEqual((plugin_name,), plugin.natural_key())
 
     def test_plugin_model_full(self):
         plugin_name = 'djangoplugins.tests.MyPluginFull'
         plugin = Plugin.objects.get(pythonpath=plugin_name)
-        self.assertEqual(_('My Plugin Full'), six.text_type(plugin))
+        self.assertEqual(_('My Plugin Full'), str(plugin))
 
     def test_plugin_point_model(self):
         point_name = 'djangoplugins.tests.MyPluginPoint'
         point = PluginPointModel.objects.get(pythonpath=point_name)
-        self.assertEqual('MyPluginPoint', six.text_type(point))
+        self.assertEqual('MyPluginPoint', str(point))
 
     def test_plugins_of_plugin(self):
         self.assertRaises(Exception, MyPlugin.get_plugins_qs)
