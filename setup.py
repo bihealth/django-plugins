@@ -21,7 +21,7 @@ Source code:
 
 setup(
     name="django-plugins-bihealth",
-    version="0.3.1",
+    version="0.4.0",
     author="Mikko Nieminen, Manuel Holtgrewe, Oliver Stolpe",
     author_email="mikko.nieminen@bih-charite.de, manuel.holtgrewe@bih-charite.de, oliver.stolpe@bih-charite.de",
     packages=find_packages(exclude=["sample-project"]),
