@@ -1,5 +1,3 @@
-from __future__ import absolute_import
-
 from django import forms
 
 from .models import Content
@@ -8,4 +6,4 @@ from .models import Content
 class ContentForm(forms.ModelForm):
     class Meta:
         model = Content
-        fields = '__all__'
+        fields = "__all__"

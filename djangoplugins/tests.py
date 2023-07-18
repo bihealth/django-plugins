@@ -1,15 +1,12 @@
-from __future__ import absolute_import
-
 from django import forms
 from django.test import TestCase
 from django.utils.translation import ugettext_lazy as _
 
-from .fields import PluginChoiceField, PluginModelChoiceField, \
-    PluginModelMultipleChoiceField
-from .point import PluginMount, PluginPoint
-from .models import Plugin, PluginPoint as PluginPointModel
-from .models import ENABLED, DISABLED, REMOVED
+from .fields import PluginChoiceField, PluginModelChoiceField, PluginModelMultipleChoiceField
 from .management.commands.syncplugins import SyncPlugins
+from .models import DISABLED, ENABLED, REMOVED, Plugin
+from .models import PluginPoint as PluginPointModel
+from .point import PluginMount, PluginPoint
 
 
 class MyPluginPoint(PluginPoint):
@@ -21,13 +18,13 @@ class MyPlugin(MyPluginPoint):
 
 
 class MyPluginFull(MyPluginPoint):
-    name = 'my-plugin-full'
-    title = _('My Plugin Full')
+    name = "my-plugin-full"
+    title = _("My Plugin Full")
 
 
 class MyPlugin2(MyPluginPoint):
-    name = 'my-plugin-2'
-    title = _('My Plugin 2')
+    name = "my-plugin-2"
+    title = _("My Plugin 2")
 
 
 class PluginSyncTestCaseBase(TestCase):
@@ -37,9 +34,9 @@ class PluginSyncTestCaseBase(TestCase):
 
     def prepate_query_sets(self):
         self.points = PluginPointModel.objects.filter(
-            pythonpath='djangoplugins.tests.MyPluginPoint')
-        self.plugins = Plugin.objects.filter(
-            pythonpath='djangoplugins.tests.MyPlugin')
+            pythonpath="djangoplugins.tests.MyPluginPoint"
+        )
+        self.plugins = Plugin.objects.filter(pythonpath="djangoplugins.tests.MyPlugin")
 
 
 class PluginSyncTestCase(PluginSyncTestCaseBase):
@@ -64,9 +61,8 @@ class PluginSyncTestCase(PluginSyncTestCaseBase):
 
     def test_plugins_meta(self):
         SyncPlugins(False, 0).all()
-        plugin_model = MyPluginPoint.get_model('my-plugin-full')
-        self.assertEqual('djangoplugins.tests.MyPluginFull',
-                         plugin_model.pythonpath)
+        plugin_model = MyPluginPoint.get_model("my-plugin-full")
+        self.assertEqual("djangoplugins.tests.MyPluginFull", plugin_model.pythonpath)
 
 
 class PluginSyncRemovedTestCase(PluginSyncTestCaseBase):
@@ -105,20 +101,20 @@ class PluginModelsTest(TestCase):
         self.assertEqual(3, qs.count())
 
     def test_plugin_model(self):
-        plugin_name = 'djangoplugins.tests.MyPlugin'
+        plugin_name = "djangoplugins.tests.MyPlugin"
         plugin = Plugin.objects.get(pythonpath=plugin_name)
         self.assertEqual(plugin_name, str(plugin))
         self.assertEqual((plugin_name,), plugin.natural_key())
 
     def test_plugin_model_full(self):
-        plugin_name = 'djangoplugins.tests.MyPluginFull'
+        plugin_name = "djangoplugins.tests.MyPluginFull"
         plugin = Plugin.objects.get(pythonpath=plugin_name)
-        self.assertEqual(_('My Plugin Full'), str(plugin))
+        self.assertEqual(_("My Plugin Full"), str(plugin))
 
     def test_plugin_point_model(self):
-        point_name = 'djangoplugins.tests.MyPluginPoint'
+        point_name = "djangoplugins.tests.MyPluginPoint"
         point = PluginPointModel.objects.get(pythonpath=point_name)
-        self.assertEqual('MyPluginPoint', str(point))
+        self.assertEqual("MyPluginPoint", str(point))
 
     def test_plugins_of_plugin(self):
         self.assertRaises(Exception, MyPlugin.get_plugins_qs)
@@ -126,8 +122,8 @@ class PluginModelsTest(TestCase):
 
 class PluginsTest(TestCase):
     def test_get_model(self):
-        point = 'djangoplugins.tests.MyPluginPoint'
-        plugin = 'djangoplugins.tests.MyPluginFull'
+        point = "djangoplugins.tests.MyPluginPoint"
+        plugin = "djangoplugins.tests.MyPluginFull"
 
         model = MyPluginFull.get_model()
         self.assertEqual(plugin, model.pythonpath)
@@ -135,7 +131,7 @@ class PluginsTest(TestCase):
         model = MyPluginFull().get_model()
         self.assertEqual(plugin, model.pythonpath)
 
-        model = MyPluginPoint.get_model('my-plugin-full')
+        model = MyPluginPoint.get_model("my-plugin-full")
         self.assertEqual(plugin, model.pythonpath)
 
         model = MyPluginPoint.get_model()
@@ -172,21 +168,20 @@ class PluginsTest(TestCase):
         self.assertFalse(MyPluginFull.is_active())
         self.assertEqual(2, MyPluginPoint.get_plugins_qs().count())
         self.assertEqual(2, len(list(MyPluginPoint.get_plugins())))
-        self.assertRaises(Plugin.DoesNotExist,
-                          lambda: MyPluginPoint.get_model('my-plugin-full'))
+        self.assertRaises(Plugin.DoesNotExist, lambda: MyPluginPoint.get_model("my-plugin-full"))
 
-        plugin_model = MyPluginPoint.get_model('my-plugin-full', status=None)
-        self.assertEqual('my-plugin-full', plugin_model.name)
+        plugin_model = MyPluginPoint.get_model("my-plugin-full", status=None)
+        self.assertEqual("my-plugin-full", plugin_model.name)
 
     def test_get_meta(self):
-        self.assertEqual('my-plugin-full', MyPluginFull.get_name())
-        self.assertEqual(_('My Plugin Full'), MyPluginFull.get_title())
+        self.assertEqual("my-plugin-full", MyPluginFull.get_name())
+        self.assertEqual(_("My Plugin Full"), MyPluginFull.get_title())
 
         model = MyPluginFull.get_model()
-        model.name = 'test'
+        model.name = "test"
         model.save()
 
-        self.assertEqual('test', MyPluginFull.get_name())
+        self.assertEqual("test", MyPluginFull.get_name())
 
 
 class MyTestForm(forms.Form):
@@ -199,15 +194,17 @@ class MyTestForm(forms.Form):
 
 class PluginsFieldsTest(TestCase):
     def test_validation(self):
-        form = MyTestForm({
-            'plugin_choice': 'my-plugin-2',
-            'model_choice': '%d' % MyPlugin2.get_model().id,
-            # 'plugin_multi_choice': ['my-plugin-2'],
-            'model_multi_choice': ['%d' % MyPlugin2.get_model().id],
-            })
+        form = MyTestForm(
+            {
+                "plugin_choice": "my-plugin-2",
+                "model_choice": "%d" % MyPlugin2.get_model().id,
+                # 'plugin_multi_choice': ['my-plugin-2'],
+                "model_multi_choice": ["%d" % MyPlugin2.get_model().id],
+            }
+        )
         self.assertTrue(form.is_valid())
 
         cld = form.cleaned_data
-        self.assertTrue(isinstance(cld['plugin_choice'], MyPlugin2))
-        self.assertTrue(isinstance(cld['model_choice'], Plugin))
-        self.assertTrue(isinstance(cld['model_multi_choice'][0], Plugin))
+        self.assertTrue(isinstance(cld["plugin_choice"], MyPlugin2))
+        self.assertTrue(isinstance(cld["model_choice"], Plugin))
+        self.assertTrue(isinstance(cld["model_multi_choice"][0], Plugin))

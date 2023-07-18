@@ -4,25 +4,37 @@ from __future__ import unicode_literals
 
 from django.db import migrations, models
 import django.db.models.deletion
+
 import djangoplugins.fields
 
 
 class Migration(migrations.Migration):
-
     initial = True
 
     dependencies = [
-        ('djangoplugins', '0001_initial'),
+        ("djangoplugins", "0001_initial"),
     ]
 
     operations = [
         migrations.CreateModel(
-            name='Content',
+            name="Content",
             fields=[
-                ('id', models.AutoField(auto_created=True, primary_key=True, serialize=False, verbose_name='ID')),
-                ('title', models.CharField(max_length=255)),
-                ('content', models.TextField()),
-                ('plugin', djangoplugins.fields.PluginField(editable=False, on_delete=django.db.models.deletion.CASCADE, to='djangoplugins.Plugin')),
+                (
+                    "id",
+                    models.AutoField(
+                        auto_created=True, primary_key=True, serialize=False, verbose_name="ID"
+                    ),
+                ),
+                ("title", models.CharField(max_length=255)),
+                ("content", models.TextField()),
+                (
+                    "plugin",
+                    djangoplugins.fields.PluginField(
+                        editable=False,
+                        on_delete=django.db.models.deletion.CASCADE,
+                        to="djangoplugins.Plugin",
+                    ),
+                ),
             ],
         ),
     ]

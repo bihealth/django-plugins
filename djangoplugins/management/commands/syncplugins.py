@@ -1,32 +1,30 @@
 from __future__ import absolute_import, unicode_literals
 
-from optparse import make_option
-
 from django.core.management.base import BaseCommand
 
+from djangoplugins.models import ENABLED, REMOVED, Plugin, PluginPoint
 from djangoplugins.point import PluginMount
-from djangoplugins.utils import get_plugin_name, load_plugins, db_table_exists
-from djangoplugins.models import Plugin, PluginPoint, REMOVED, ENABLED
+from djangoplugins.utils import db_table_exists, get_plugin_name, load_plugins
 
 
 class Command(BaseCommand):
-    help = ("Syncs the registered plugins and plugin points with the model "
-            "versions.")
+    help = "Syncs the registered plugins and plugin points with the model " "versions."
     requires_model_validation = True
 
     def add_arguments(self, parser):
-        parser.add_argument('--delete',
-            action='store_true',
-            dest='delete',
-            help='delete the REMOVED Plugin and PluginPoint '
-            'instances. ')
+        parser.add_argument(
+            "--delete",
+            action="store_true",
+            dest="delete",
+            help="delete the REMOVED Plugin and PluginPoint " "instances. ",
+        )
 
     def handle(self, *args, **options):
-        sync = SyncPlugins(options.get('delete'), options.get('verbosity'))
+        sync = SyncPlugins(options.get("delete"), options.get("verbosity"))
         sync.all()
 
 
-class SyncPlugins():
+class SyncPlugins:
     """
     In most methods ``src`` and ``dst`` variables are used, they meaning is:
 
@@ -60,8 +58,7 @@ class SyncPlugins():
         for name, point in iter(src.items()):
             inst = dst.pop(name, None)
             if inst is None:
-                self.print_(1, "Registering %s for %s" % (model.__name__,
-                                                          name))
+                self.print_(1, "Registering %s for %s" % (model.__name__, name))
                 inst = model(pythonpath=name)
             if inst.status == REMOVED:
                 self.print_(1, "Updating %s for %s" % (model.__name__, name))
@@ -90,10 +87,10 @@ class SyncPlugins():
         dst = self.get_instances_dict(PluginPoint.objects.all())
 
         for point, inst in self.available(src, dst, PluginPoint):
-            if hasattr(point, '_title'):
+            if hasattr(point, "_title"):
                 inst.title = point._title
             else:
-                inst.title = inst.pythonpath.split('.')[-1]
+                inst.title = inst.pythonpath.split(".")[-1]
             inst.save()
             self.plugins(point, inst)
 
@@ -108,9 +105,9 @@ class SyncPlugins():
 
         for plugin, inst in self.available(src, dst, Plugin):
             inst.point = point_inst
-            inst.name = getattr(plugin, 'name', None)
-            if hasattr(plugin, 'title'):
-                inst.title = getattr(plugin, 'title')
+            inst.name = getattr(plugin, "name", None)
+            if hasattr(plugin, "title"):
+                inst.title = getattr(plugin, "title")
             inst.save()
 
         self.missing(dst)
@@ -123,9 +120,8 @@ class SyncPlugins():
         # plugins to be executed before the corresponding database tables
         # exist. This method will only return something if the database
         # tables have already been created.
-        if (
-                not db_table_exists(Plugin._meta.db_table) or
-                not db_table_exists(PluginPoint._meta.db_table)
+        if not db_table_exists(Plugin._meta.db_table) or not db_table_exists(
+            PluginPoint._meta.db_table
         ):
             return
         self.points()

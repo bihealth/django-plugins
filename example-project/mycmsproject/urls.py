@@ -12,18 +12,15 @@ Including another URLconf
     1. Add an import:  from blog import urls as blog_urls
     2. Add a URL to urlpatterns:  url(r'^blog/', include(blog_urls))
 """
-from __future__ import absolute_import
-
 from django.conf.urls import url
 
 from djangoplugins.utils import include_plugins
+
 from .plugins import ContentType
 from .views import index
 
 urlpatterns = [
-    url(r'^$', index, name='index'),
-    url(r'^content/', include_plugins(ContentType)),
-    url(r'^content/', include_plugins(
-        ContentType, '{plugin}/(?P<pk>\d+)/', 'instance_urls'
-    )),
+    url(r"^$", index, name="index"),
+    url(r"^content/", include_plugins(ContentType)),
+    url(r"^content/", include_plugins(ContentType, r"{plugin}/(?P<pk>\d+)/", "instance_urls")),
 ]

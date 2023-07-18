@@ -3,21 +3,26 @@ from __future__ import absolute_import, unicode_literals
 from dirtyfields import DirtyFieldsMixin
 from django.db import models
 from django.utils.translation import ugettext_lazy as _
-from djangoplugins.signals import django_plugin_enabled, django_plugin_disabled
-from .utils import get_plugin_name, get_plugin_from_string
+
+from djangoplugins.signals import django_plugin_disabled, django_plugin_enabled
+
+from .utils import get_plugin_from_string, get_plugin_name
 
 ENABLED = 0
 DISABLED = 1
 REMOVED = 2
 
 STATUS_CHOICES = (
-    (ENABLED,  _('Enabled')),
-    (DISABLED, _('Disabled')),
-    (REMOVED,  _('Removed')),
+    (ENABLED, _("Enabled")),
+    (DISABLED, _("Disabled")),
+    (REMOVED, _("Removed")),
 )
 
 STATUS_CHOICES_ENABLED = (ENABLED,)
-STATUS_CHOICES_DISABLED = (DISABLED, REMOVED,)
+STATUS_CHOICES_DISABLED = (
+    DISABLED,
+    REMOVED,
+)
 
 
 class PluginPointManager(models.Manager):
@@ -41,8 +46,7 @@ class PluginManager(models.Manager):
         return self.get(pythonpath=get_plugin_name(plugin))
 
     def get_plugins_of(self, point):
-        return self.filter(point__pythonpath=get_plugin_name(point),
-                           status=ENABLED)
+        return self.filter(point__pythonpath=get_plugin_name(point), status=ENABLED)
 
     def get_by_natural_key(self, name):
         return self.get(pythonpath=name)
@@ -72,10 +76,11 @@ class Plugin(DirtyFieldsMixin, models.Model):
     status
         Plugin status.
     """
+
     point = models.ForeignKey(PluginPoint, on_delete=models.CASCADE)
     pythonpath = models.CharField(max_length=255, unique=True)
     name = models.CharField(max_length=255, null=True, blank=True)
-    title = models.CharField(max_length=255, default='', blank=True)
+    title = models.CharField(max_length=255, default="", blank=True)
     index = models.IntegerField(default=0)
     status = models.SmallIntegerField(choices=STATUS_CHOICES, default=ENABLED)
 
@@ -83,7 +88,7 @@ class Plugin(DirtyFieldsMixin, models.Model):
 
     class Meta:
         unique_together = (("point", "name"),)
-        ordering = ('index', 'id')
+        ordering = ("index", "id")
 
     def __str__(self):
         if self.title:
@@ -105,10 +110,8 @@ class Plugin(DirtyFieldsMixin, models.Model):
     def save(self, *args, **kwargs):
         if "status" in self.get_dirty_fields().keys() and self.pk:
             if self.status in STATUS_CHOICES_ENABLED:
-                django_plugin_enabled.send(sender=self.__class__,
-                                           plugin=self.get_plugin())
+                django_plugin_enabled.send(sender=self.__class__, plugin=self.get_plugin())
             else:
-                django_plugin_disabled.send(sender=self.__class__,
-                                            plugin=self.get_plugin())
+                django_plugin_disabled.send(sender=self.__class__, plugin=self.get_plugin())
 
         return super(Plugin, self).save(*args, **kwargs)

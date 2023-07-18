@@ -1,11 +1,11 @@
 from __future__ import absolute_import, unicode_literals
 
-from django.utils.translation import ugettext_lazy as _
 from django.core.exceptions import ObjectDoesNotExist
+from django.utils.translation import ugettext_lazy as _
 
-from .models import Plugin, PluginPoint as PluginPointModel, ENABLED
-from .utils import get_plugin_name, db_table_exists
-
+from .models import ENABLED, Plugin
+from .models import PluginPoint as PluginPointModel
+from .utils import db_table_exists, get_plugin_name
 
 _PLUGIN_POINT = "<class 'djangoplugins.point.PluginPoint'>"
 
@@ -35,7 +35,7 @@ class PluginMount(type):
             # class shouldn't be registered as a plugin. Instead, it sets up a
             # list where plugins can be registered later.
             cls.plugins = []
-        elif hasattr(cls, 'plugins'):
+        elif hasattr(cls, "plugins"):
             # This must be a plugin implementation, which should be registered.
             # Simply appending it to the list is all that's needed to keep
             # track of it later.
@@ -52,8 +52,7 @@ class PluginPoint(metaclass=PluginMount):
     @classmethod
     def is_active(cls):
         if is_plugin_point(cls):
-            raise Exception(_('This method is only available to plugin '
-                              'classes.'))
+            raise Exception(_("This method is only available to plugin " "classes."))
         else:
             return cls.get_model().is_active()
 
@@ -75,9 +74,8 @@ class PluginPoint(metaclass=PluginMount):
             if name is not None:
                 kwargs = {}
                 if status is not None:
-                    kwargs['status'] = status
-                return Plugin.objects.get(point__pythonpath=ppath,
-                                          name=name, **kwargs)
+                    kwargs["status"] = status
+                return Plugin.objects.get(point__pythonpath=ppath, name=name, **kwargs)
             else:
                 return PluginPointModel.objects.get(pythonpath=ppath)
         else:
@@ -93,8 +91,7 @@ class PluginPoint(metaclass=PluginMount):
         Returns plugin point model instance. Only used from plugin classes.
         """
         if is_plugin_point(cls):
-            raise Exception(_('This method is only available to plugin '
-                              'classes.'))
+            raise Exception(_("This method is only available to plugin " "classes."))
         else:
             return cls.__base__
 
@@ -104,11 +101,9 @@ class PluginPoint(metaclass=PluginMount):
         Returns plugin point model instance. Only used from plugin classes.
         """
         if is_plugin_point(cls):
-            raise Exception(_('This method is only available to plugin '
-                              'classes.'))
+            raise Exception(_("This method is only available to plugin " "classes."))
         else:
-            return PluginPointModel.objects.\
-                get(plugin__pythonpath=cls.get_pythonpath())
+            return PluginPointModel.objects.get(plugin__pythonpath=cls.get_pythonpath())
 
     @classmethod
     def get_plugins(cls):
@@ -127,8 +122,7 @@ class PluginPoint(metaclass=PluginMount):
             for plugin_model in cls.get_plugins_qs():
                 yield plugin_model.get_plugin()
         else:
-            raise Exception(_('This method is only available to plugin point '
-                              'classes.'))
+            raise Exception(_("This method is only available to plugin point " "classes."))
 
     @classmethod
     def get_plugins_qs(cls):
@@ -143,25 +137,22 @@ class PluginPoint(metaclass=PluginMount):
         """
         if is_plugin_point(cls):
             point_pythonpath = cls.get_pythonpath()
-            return Plugin.objects.filter(point__pythonpath=point_pythonpath,
-                                         status=ENABLED).\
-                order_by('index')
+            return Plugin.objects.filter(
+                point__pythonpath=point_pythonpath, status=ENABLED
+            ).order_by("index")
         else:
-            raise Exception(_('This method is only available to plugin point '
-                              'classes.'))
+            raise Exception(_("This method is only available to plugin point " "classes."))
 
     @classmethod
     def get_name(cls):
         if is_plugin_point(cls):
-            raise Exception(_('This method is only available to plugin '
-                              'classes.'))
+            raise Exception(_("This method is only available to plugin " "classes."))
         else:
             return cls.get_model().name
 
     @classmethod
     def get_title(cls):
         if is_plugin_point(cls):
-            raise Exception(_('This method is only available to plugin '
-                              'classes.'))
+            raise Exception(_("This method is only available to plugin " "classes."))
         else:
             return cls.get_model().title

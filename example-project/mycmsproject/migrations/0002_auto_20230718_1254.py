@@ -2,25 +2,32 @@
 
 from django.db import migrations, models
 import django.db.models.deletion
+
 import djangoplugins.fields
 
 
 class Migration(migrations.Migration):
-
     dependencies = [
-        ('djangoplugins', '0002_auto_20230718_1254'),
-        ('mycmsproject', '0001_initial'),
+        ("djangoplugins", "0002_auto_20230718_1254"),
+        ("mycmsproject", "0001_initial"),
     ]
 
     operations = [
         migrations.AlterField(
-            model_name='content',
-            name='id',
-            field=models.BigAutoField(auto_created=True, primary_key=True, serialize=False, verbose_name='ID'),
+            model_name="content",
+            name="id",
+            field=models.BigAutoField(
+                auto_created=True, primary_key=True, serialize=False, verbose_name="ID"
+            ),
         ),
         migrations.AlterField(
-            model_name='content',
-            name='plugin',
-            field=djangoplugins.fields.PluginField(editable=False, limit_choices_to={'point__pythonpath': 'mycmsproject.plugins.ContentType'}, on_delete=django.db.models.deletion.CASCADE, to='djangoplugins.plugin'),
+            model_name="content",
+            name="plugin",
+            field=djangoplugins.fields.PluginField(
+                editable=False,
+                limit_choices_to={"point__pythonpath": "mycmsproject.plugins.ContentType"},
+                on_delete=django.db.models.deletion.CASCADE,
+                to="djangoplugins.plugin",
+            ),
         ),
     ]

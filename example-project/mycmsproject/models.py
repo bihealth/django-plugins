@@ -1,10 +1,7 @@
-from __future__ import absolute_import
-
 from django.db import models
+from mycmsproject.plugins import ContentType
 
 from djangoplugins.fields import PluginField
-
-from mycmsproject.plugins import ContentType
 
 
 class Content(models.Model):
