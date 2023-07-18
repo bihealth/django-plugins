@@ -19,8 +19,6 @@ Home page
 Source code:
     https://github.com/bihealth/django-plugins\n\n""".lstrip()
 
-long_description += read_docs("CHANGES.rst")
-
 setup(
     name="django-plugins-bihealth",
     version="0.3.1",
