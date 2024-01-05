@@ -1,4 +1,4 @@
-from django.conf.urls import url
+from django.urls import re_path
 
 try:
     from django.core.urlresolvers import reverse
@@ -12,11 +12,11 @@ from djangoplugins.point import PluginPoint
 
 class ContentType(PluginPoint):
     urls = [
-        url(r"^$", mycmsproject.views.content_list, name="content-list"),
-        url(r"^create/$", mycmsproject.views.content_create, name="content-create"),
+        re_path(r"^$", mycmsproject.views.content_list, name="content-list"),
+        re_path(r"^create/$", mycmsproject.views.content_create, name="content-create"),
     ]
 
-    instance_urls = [url(r"^$", mycmsproject.views.content_read, name="content-read")]
+    instance_urls = [re_path(r"^$", mycmsproject.views.content_read, name="content-read")]
 
     def get_list_url(self):
         return reverse("content-list")
