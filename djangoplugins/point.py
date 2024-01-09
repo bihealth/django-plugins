@@ -1,7 +1,10 @@
 from __future__ import absolute_import, unicode_literals
 
 from django.core.exceptions import ObjectDoesNotExist
-from django.utils.translation import gettext_lazy as _
+try:
+    from django.utils.translation import ugettext_lazy as _
+except ImportError:
+    from django.utils.translation import gettext_lazy as _
 
 from .models import ENABLED, Plugin
 from .models import PluginPoint as PluginPointModel

@@ -1,6 +1,9 @@
 from django import forms
 from django.test import TestCase
-from django.utils.translation import gettext_lazy as _
+try:
+    from django.utils.translation import ugettext_lazy as _
+except ImportError:
+    from django.utils.translation import gettext_lazy as _
 
 from .fields import PluginChoiceField, PluginModelChoiceField, PluginModelMultipleChoiceField
 from .management.commands.syncplugins import SyncPlugins

@@ -3,7 +3,7 @@ import sys
 
 from django.conf import settings
 from django.db import connection
-from django.urls import re_path
+from django.urls import include, re_path
 
 
 def get_plugin_name(cls):
