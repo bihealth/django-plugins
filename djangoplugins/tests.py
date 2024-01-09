@@ -1,5 +1,6 @@
 from django import forms
 from django.test import TestCase
+
 try:
     from django.utils.translation import ugettext_lazy as _
 except ImportError:
