@@ -2,8 +2,8 @@ from importlib import import_module
 import sys
 
 from django.conf import settings
-from django.conf.urls import include, url
 from django.db import connection
+from django.urls import include, re_path
 
 
 def get_plugin_name(cls):
@@ -35,7 +35,7 @@ def include_plugins(point, pattern=r"{plugin}/", urls="urls"):
             _urls = getattr(plugin, urls)
             for _url in _urls:
                 _url.default_args["plugin"] = plugin.name
-            pluginurls.append(url(pattern.format(plugin=plugin.name), include(_urls)))
+            pluginurls.append(re_path(pattern.format(plugin=plugin.name), include(_urls)))
     return include(pluginurls)
 
 
