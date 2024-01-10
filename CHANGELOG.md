@@ -1,5 +1,12 @@
 # Changelog
 
+## [0.5.0](https://www.github.com/bihealth/django-plugins/compare/v0.4.0...v0.5.0) (2024-01-10)
+
+
+### Features
+
+* update for Django 4.2 compatibility ([#10](https://www.github.com/bihealth/django-plugins/issues/10)) ([#11](https://www.github.com/bihealth/django-plugins/issues/11)) ([420de5d](https://www.github.com/bihealth/django-plugins/commit/420de5dbbd72c7585af58b47f3cf41e2e174cd82))
+
 ## [0.4.0](https://www.github.com/bihealth/django-plugins/compare/v0.3.1...v0.4.0) (2023-07-18)
 
 
