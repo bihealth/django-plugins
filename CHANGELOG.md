@@ -1,5 +1,12 @@
 # Changelog
 
+### [0.5.2](https://www.github.com/bihealth/django-plugins/compare/v0.5.1...v0.5.2) (2024-01-25)
+
+
+### Continuous Integration
+
+* install setuptools in release-please for py312 ([7164824](https://www.github.com/bihealth/django-plugins/commit/7164824308386b427e74944fbe17fce1857ec358))
+
 ### [0.5.1](https://www.github.com/bihealth/django-plugins/compare/v0.5.0...v0.5.1) (2024-01-25)
 
 
