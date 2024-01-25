@@ -1,5 +1,12 @@
 # Changelog
 
+### [0.5.1](https://www.github.com/bihealth/django-plugins/compare/v0.5.0...v0.5.1) (2024-01-25)
+
+
+### Miscellaneous Chores
+
+* re-release for pypi 0.5.1 ([c2e54df](https://www.github.com/bihealth/django-plugins/commit/c2e54dfedae44a8b04f1230acbaee632aa71d32e))
+
 ## [0.5.0](https://www.github.com/bihealth/django-plugins/compare/v0.4.0...v0.5.0) (2024-01-10)
 
 
